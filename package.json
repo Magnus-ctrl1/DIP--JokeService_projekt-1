@@ -3,6 +3,7 @@
     "express": "^4.17.1",
     "mongoose": "^5.10.9",
     "should": "^13.2.3",
-    "supertest": "^5.0.0"
+    "supertest": "^5.0.0",
+    "node-fecth": "^2.6.1"
   }
 }
