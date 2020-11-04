@@ -2,6 +2,7 @@
 let setupInput = document.getElementById("setup");
 let punchlineInput = document.getElementById("punchline");
 let opretButton = document.getElementById('opretButton');
+let rydButton = document.getElementById('clear');
 let selectSite = document.getElementById('selectSite');
 
 
@@ -50,12 +51,21 @@ main();
 opretButton.onclick = async () => {
     let setup = setupInput.value;
     let punchline = punchlineInput.value;
-    console.log(setup + " " + punchline);
-    try {
-        await post("/joke/api/jokes", { setup, punchline });
-    } catch (e) {
-        console.log(e);
+    if (setup && punchline) {
+        try {
+            await post("/joke/api/jokes", { setup, punchline });
+        } catch (e) {
+            console.log(e);
+        }
+        setupInput.value = '';
+        punchlineInput.value = '';
+        main();
     }
+}
+
+rydButton.onclick = () => {
+    setupInput.value = '';
+    punchlineInput.value = '';
 }
 
 async function getSites() {
@@ -70,10 +80,8 @@ async function getSites() {
 
 function createSelect(result) {
     let siteArray = []
-    console.log(result)
     for (let i = 0; i < result.length; i++) {
         siteArray.push(result[i].address)
-        console.log(siteArray[i])
         let option = document.createElement('option')
         option.text = siteArray[i]
         selectSite.add(option, i)
