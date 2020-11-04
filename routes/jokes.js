@@ -2,14 +2,6 @@
 const controller = require("../controller/controller");
 const express = require('express');
 const router = express.Router();
-const fetch = require('node-fetch');
-
-async function get(url) {
-    const respons = await fetch(url);
-    if (respons.status !== 200) // OK
-        throw new Error(respons.status);
-    return await respons.json();
-}
 
 router
     .get('/', async (request, response) => {
@@ -28,8 +20,8 @@ router
         } catch (e) {
             sendStatus(e, response);
         }
-    }
-    );
+        response.sendStatus(201)
+    });
 
 function sendStatus(e, response) {
     console.error("Exception: " + e);
@@ -39,13 +31,12 @@ function sendStatus(e, response) {
 
 module.exports = router;
 
-async function createjokefunc(){
-    await controller.createJoke('Hvorfor var blondinen glad for, at samle et puzzlespil på 6 måneder?', 'Fordi der stod 2-4 år')
-    await controller.createJoke('Alle børnene løb over marken undtagen Bo', 'Han blev voldtaget af en ko')
-    await controller.createJoke('Alle børnene kom sikkert over havet undtagen Jannik', 'Han to Titanic')
-    await controller.createJoke('Hvorfor stiller århusianerne altid mælken ud på badeværelset?', 'Fordi at den ikke kan holde sig')
-    await controller.createJoke('Hvad kalder man en århusianer med spredte baller?', 'Et cykelstativ!')
-    await controller.createJoke('Hvad er pink og rød og sølv og kravler ind i vægge?', 'En baby med gafler i øjnene.')
-}
-
+// async function createjokefunc(){
+//     await controller.createJoke('Hvorfor var blondinen glad for, at samle et puzzlespil på 6 måneder?', 'Fordi der stod 2-4 år')
+//     await controller.createJoke('Alle børnene løb over marken undtagen Bo', 'Han blev voldtaget af en ko')
+//     await controller.createJoke('Alle børnene kom sikkert over havet undtagen Jannik', 'Han to Titanic')
+//     await controller.createJoke('Hvorfor stiller århusianerne altid mælken ud på badeværelset?', 'Fordi at den ikke kan holde sig')
+//     await controller.createJoke('Hvad kalder man en århusianer med spredte baller?', 'Et cykelstativ!')
+//     await controller.createJoke('Hvad er pink og rød og sølv og kravler ind i vægge?', 'En baby med gafler i øjnene.')
+// }
 // createjokefunc() 

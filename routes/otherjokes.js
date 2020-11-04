@@ -1,8 +1,7 @@
 // jokes.js
-const controller = require("../controller/controller");
 const express = require('express');
 const router = express.Router();
-const fetch = require('node-fetch');
+const fetch = require('node-fetch')
 
 async function get(url) {
     const respons = await fetch(url);
@@ -14,12 +13,22 @@ async function get(url) {
 router
     .get('/:site', async (request, response) => {
         try {
-            let jokes = await controller.getJokes();
-            response.send(jokes);
+            let result = await get("https://krdo-joke-registry.herokuapp.com/api/services")
+            for (site of result) {
+                if (site._id == request.params.site) {
+                    let url = site.address
+                    if(url[url.length - 1] != '/'){
+                        url += '/'
+                    }
+                    result = await get(url + 'api/jokes')
+                }
+            }
+            response.send(result)
         } catch (e) {
             sendStatus(e, response);
         }
-    });
+
+    })
 
 function sendStatus(e, response) {
     console.error("Exception: " + e);
