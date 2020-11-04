@@ -2,6 +2,7 @@
 const controller = require("../controller/controller");
 const express = require('express');
 const router = express.Router();
+const nodeFetch = require('node-fetch');
 
 router
     .get('/api/jokes', async (request, response) => {
