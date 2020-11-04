@@ -39,7 +39,7 @@ async function generateJokesTable(jokes) {
 
 async function main() {
     try {
-        let jokes = await get('/joke/api/jokes');
+        let jokes = await get('/api/jokes');
         let div = document.getElementById('jokesDiv')
         div.innerHTML = await generateJokesTable(jokes);
     } catch (e) {
@@ -53,7 +53,7 @@ opretButton.onclick = async () => {
     let punchline = punchlineInput.value;
     if (setup && punchline) {
         try {
-            await post("/joke/api/jokes", { setup, punchline });
+            await post("/api/jokes", { setup, punchline });
         } catch (e) {
             console.log(e);
         }
@@ -70,7 +70,7 @@ rydButton.onclick = () => {
 
 async function getSites() {
     try {
-        let result = await get('https://krdo-joke-registry.herokuapp.com/api/services');
+        let result = await get('/api/othersites');
         createSelect(result)
     }
     catch (e) {

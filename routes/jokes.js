@@ -2,9 +2,17 @@
 const controller = require("../controller/controller");
 const express = require('express');
 const router = express.Router();
+const fetch = require('node-fetch');
+
+async function get(url) {
+    const respons = await fetch(url);
+    if (respons.status !== 200) // OK
+        throw new Error(respons.status);
+    return await respons.json();
+}
 
 router
-    .get('/api/jokes', async (request, response) => {
+    .get('/', async (request, response) => {
         try {
             let jokes = await controller.getJokes();
             response.send(jokes);
@@ -12,23 +20,7 @@ router
             sendStatus(e, response);
         }
     })
-    .get('/api/othersites', async (request, response) => {
-        try {
-            let jokes = await controller.getJokes();
-            response.send(jokes);
-        } catch (e) {
-            sendStatus(e, response);
-        }
-    })
-    .get('/api/othersites/:joke', async (request, response) => {
-        try {
-            let jokes = await controller.getJokes();
-            response.send(jokes);
-        } catch (e) {
-            sendStatus(e, response);
-        }
-    })
-    .post('/api/jokes', async (request, response) => {
+    .post('/', async (request, response) => {
         try {
             let { setup, punchline } = request.body;
             await controller.createJoke(setup, punchline);
