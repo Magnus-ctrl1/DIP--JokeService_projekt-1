@@ -30,16 +30,16 @@ async function generateJokesTable(jokes) {
     return compiledTemplate({ jokes });
 }
 
-async function main() {
+async function main(url) {
     try {
-        let jokes = await get('/joke/api/jokes');
+        let jokes = await get(url);
         let div = document.getElementById('jokesdiv')
         div.innerHTML = await generateJokesTable(jokes);
     } catch (e) {
         console.log(e.name + ": " + e.message);
     }
 }
-main();
+main('/api/jokes');
 
 let opretButton = document.getElementById('opretButton')
 let setupfield = document.getElementById('setup')
@@ -50,7 +50,7 @@ let rydButton = document.getElementById('clear')
 opretButton.onclick = async () => {
     if(setupfield.value && punchInField.value){
     try {
-        await post("/joke/api/jokes", { setup: setupfield.value , punchline: punchInField.value });
+        await post("/api/jokes", { setup: setupfield.value , punchline: punchInField.value });
     } catch (e) {
     }
 setupfield.value = "";
@@ -59,17 +59,39 @@ main();
     }
 }
 
-rydButton.onclick = async () => {
+rydButton.onclick = () => {
     setupfield.value = ''
     punchInField.value = ''
 }
 
 let selectSite = document.getElementById('selectSite')
 
+let othersitesObjects = []
+
+selectSite.onchange = async () => {
+
+    try{
+        let id;
+        for (site of othersitesObjects) {
+            if (site.name === selectSite.value) {
+                id = site._id
+            }
+         }
+        let jokes = await get("/api/otherjokes/" + id)
+        let div = document.getElementById('jokesdiv')
+        div.innerHTML = await generateJokesTable(jokes);
+    }
+    catch(e){
+        
+    }
+    
+
+}
 
 async function getSites() {
     try {
-        let result = await get('https://krdo-joke-registry.herokuapp.com/api/services');
+        let result = await get('/api/othersites');
+        othersitesObjects = result
         createSelect(result)
     }
     catch (e) {
@@ -79,10 +101,8 @@ async function getSites() {
 
 function createSelect(result) {
     let siteArray = []
-    console.log(result)
     for (let i = 0; i < result.length; i++) {
-        siteArray.push(result[i].address)
-        console.log(siteArray[i])
+        siteArray.push(result[i].name)
         let option = document.createElement('option')
         option.text = siteArray[i]
         selectSite.add(option, i)

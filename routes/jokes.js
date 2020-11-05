@@ -2,10 +2,9 @@
 const controller = require("../controller/controller");
 const express = require('express');
 const router = express.Router();
-const nodeFetch = require('node-fetch');
 
 router
-    .get('/api/jokes', async (request, response) => {
+    .get('/', async (request, response) => {
         try {
             let jokes = await controller.getJokes();
             response.send(jokes);
@@ -13,22 +12,8 @@ router
             sendStatus(e, response);
         }
     })
-    .get('/api/othersites', async (request, response) => {
-        try {
 
-        } catch (e) {
-            sendStatus(e, response);
-        }
-    })
-    .get('/api/othersites/:joke', async (request, response) => {
-        try {
-            let jokes = await controller.getJokes();
-            response.send(jokes);
-        } catch (e) {
-            sendStatus(e, response);
-        }
-    })
-    .post('/api/jokes', async (request, response) => {
+    .post('/', async (request, response) => {
         try {
             let { setup, punchline } = request.body;
             await controller.createJoke(setup, punchline);
@@ -36,7 +21,7 @@ router
         } catch (e) {
             sendStatus(e, response);
         }
-        response.send({ message: 'Joke saved!' });
+        response.sendStatus(201);
     }
     );
 
@@ -48,8 +33,8 @@ function sendStatus(e, response) {
 
 module.exports = router;
 
-async function createjokefunc(){
+async function createjokefunc() {
     await controller.createJoke('Alle børnene slap ud af fængslet', 'Undtaget Peter, han nåede kun 500 meter')
 }
 
-// createjokefunc()
+// createjokefunc() 
