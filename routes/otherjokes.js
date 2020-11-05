@@ -1,5 +1,8 @@
 // jokes.js
+<<<<<<< HEAD
 const controller = require("../controller/controller");
+=======
+>>>>>>> bbe6c17ed1676b332e942f490cbf4a586c8f9aa0
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch')
@@ -12,6 +15,7 @@ async function get(url) {
 }
 
 router
+<<<<<<< HEAD
 
 .get('/:site', async (request, response) => {
     try {
@@ -34,6 +38,26 @@ router
     }
 
 })
+=======
+    .get('/:site', async (request, response) => {
+        try {
+            let result = await get("https://krdo-joke-registry.herokuapp.com/api/services")
+            for (site of result) {
+                if (site._id == request.params.site) {
+                    let url = site.address
+                    if(url[url.length - 1] != '/'){
+                        url += '/'
+                    }
+                    result = await get(url + 'api/jokes')
+                }
+            }
+            response.send(result)
+        } catch (e) {
+            sendStatus(e, response);
+        }
+
+    })
+>>>>>>> bbe6c17ed1676b332e942f490cbf4a586c8f9aa0
 
 function sendStatus(e, response) {
     console.error("Exception: " + e);
